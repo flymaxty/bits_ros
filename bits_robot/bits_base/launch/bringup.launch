@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="log_type" default="screen"/>
+
+  <!-- bits description -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find bits_description)/urdf/bits.urdf.xacro" />
+
+  <!-- bits driver -->
+  <node name="bits_base_node" pkg="bits_base" type="bits_base_node" output="$(arg log_type)">
+    <param name="left_wheel_joint" type="string" value="drive_wheel_left_joint" />
+  </node>
+
+  <!-- bits controller -->
+  <include file="$(find bits_control)/launch/control.launch">
+    <arg name="log_type" value="$(arg log_type)"/>
+  </include>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="$(arg log_type)">
+    <!-- <param name="publish_frequency" type="double" value="50" /> -->
+  </node>
+
+  <!-- Viz -->
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find bits_viz)/viz/view.rviz" /> -->
+</launch>
